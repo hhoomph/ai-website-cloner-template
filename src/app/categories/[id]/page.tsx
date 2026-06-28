@@ -8,11 +8,12 @@ export function generateStaticParams() {
   return categories.map((c) => ({ id: String(c.id) }));
 }
 
-export default function CategoryPage({ params }: { params: { id: string } }) {
-  const id = Number(params.id);
-  const category = getCategory(id);
+export default async function CategoryPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const categoryId = Number(id);
+  const category = getCategory(categoryId);
   if (!category) return notFound();
-  const articles = getArticlesByCategory(id);
+  const articles = getArticlesByCategory(categoryId);
 
   return (
     <div dir="rtl" className="min-h-screen" style={{ fontFamily: "'AlQabas Font', 'Cairo', 'Changa', 'IBM-Plex-Sans', sans-serif" }}>

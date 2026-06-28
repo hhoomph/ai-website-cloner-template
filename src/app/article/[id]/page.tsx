@@ -9,8 +9,9 @@ export function generateStaticParams() {
   return articles.map((a) => ({ id: String(a.id) }));
 }
 
-export default function ArticleDetailPage({ params }: { params: { id: string } }) {
-  const article = getArticle(Number(params.id));
+export default async function ArticleDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const article = getArticle(Number(id));
   if (!article) return notFound();
   const related = getRecentArticles(6).filter((a) => a.id !== article.id && a.categoryId === article.categoryId);
 
