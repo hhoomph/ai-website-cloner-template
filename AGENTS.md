@@ -1,6 +1,6 @@
 # ai-website-cloner-template — Project Memory
 
-Auto-synced | 74 observations
+Auto-synced | 75 observations
 
 Stack: TypeScript · Next.js · Tailwind
 
@@ -48,6 +48,10 @@ Source of truth: .neurosync/rules/neurosync_auto.md
 # 📐 Conventions
 
 - convention in globals.css
+
+# 🔁 Learned Patterns
+
+- what-changed in next-env.d.ts (seen 3x)
 
 ---
 *Auto-synced by NeuroSync 🧠 on June 28, 2026*

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { MenuIcon, SearchIcon, PdfIcon, UserIcon, CloseIcon } from "./icons";
 
 const categories = [
@@ -38,9 +39,9 @@ export default function Header() {
 
           {/* Right - Search, PDF, User */}
           <div className="flex items-center gap-4">
-            <button className="cursor-pointer">
+            <Link href="/search" className="cursor-pointer">
               <SearchIcon size={18} color="white" />
-            </button>
+            </Link>
             <a href="/electrony/" className="flex items-center gap-1 text-xs text-gray-300 hover:text-white">
               <PdfIcon size={12} height={16} />
               <span>عدد اليوم</span>
