@@ -1,65 +1,53 @@
-<!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
+# ai-website-cloner-template — Project Memory
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
-<!-- END:nextjs-agent-rules -->
+Auto-synced | 30 observations
 
-# Website Reverse-Engineer Template
+Stack: TypeScript · Next.js · Tailwind
 
-## What This Is
-A reusable template for reverse-engineering any website into a clean, modern Next.js codebase using AI coding agents. The Next.js + shadcn/ui + Tailwind v4 base is pre-scaffolded — just run `/clone-website <url1> [<url2> ...]`.
+# 🏛️ CORE ARCHITECTURE
 
-## Tech Stack
-- **Framework:** Next.js 16 (App Router, React 19, TypeScript strict)
-- **UI:** shadcn/ui (Radix primitives, Tailwind CSS v4, `cn()` utility)
-- **Icons:** Lucide React (default — will be replaced/supplemented by extracted SVGs)
-- **Styling:** Tailwind CSS v4 with oklch design tokens
-- **Deployment:** Vercel
+CRITICAL: User-defined architecture constraints. Never violate them.
 
-## Commands
-- `npm run dev` — Start dev server
-- `npm run build` — Production build
-- `npm run lint` — ESLint check
-- `npm run typecheck` — TypeScript check
-- `npm run check` — Run lint + typecheck + build
+# Intellectual Property & Architecture Rules
+Write your strict architectural boundaries here.
+NeuroSync will automatically enforce these rules across all AI agents
+and inject them into the memory context.
 
-## Code Style
-- TypeScript strict mode, no `any`
-- Named exports, PascalCase components, camelCase utils
-- Tailwind utility classes, no inline styles
-- 2-space indentation
-- Responsive: mobile-first
+Example:
+- NEVER use TailwindCSS. Only use vanilla CSS.
+- NEVER write class components. Only use functional React components.
 
-## Design Principles
-- **Pixel-perfect emulation** — match the target's spacing, colors, typography exactly
-- **No personal aesthetic changes during emulation phase** — match 1:1 first, customize later
-- **Real content** — use actual text and assets from the target site, not placeholders
-- **Beauty-first** — every pixel matters
+# 🧠 CORE LESSONS (SELF-CORRECTION)
 
-## Project Structure
-```
-src/
-  app/              # Next.js routes
-  components/       # React components
-    ui/             # shadcn/ui primitives
-    icons.tsx       # Extracted SVG icons as React components
-  lib/
-    utils.ts        # cn() utility (shadcn)
-  types/            # TypeScript interfaces
-  hooks/            # Custom React hooks
-public/
-  images/           # Downloaded images from target site
-  videos/           # Downloaded videos from target site
-  seo/              # Favicons, OG images, webmanifest
-docs/
-  research/         # Inspection output (design tokens, components, layout)
-  design-references/ # Screenshots and visual references
-scripts/            # Asset download scripts
-```
+CRITICAL: Persisted lessons. Do not repeat past mistakes.
 
-## MOST IMPORTANT NOTES
-- When launching Claude Code agent teams, ALWAYS have each teammate work in their own worktree branch and merge everyone's work at the end, resolving any merge conflicts smartly since you are basically serving the orchestrator role and have full context to our goals, work given, work achieved, and desired outcomes.
-- After editing `AGENTS.md`, run `bash scripts/sync-agent-rules.sh` to regenerate platform-specific instruction files.
-- After editing `.claude/skills/clone-website/SKILL.md`, run `node scripts/sync-skills.mjs` to regenerate the skill for all platforms.
+# 🧠 Agent Lessons
 
-@docs/research/INSPECTION_GUIDE.md
+This file is a self-optimizing loop. When an AI agent makes a mistake and you correct it,
+tell the agent to document the pattern here so it mathematically never repeats the mistake.
+
+# 📋 Lessons
+- Ensure all variables are typed before pushing.
+
+# 🛡️ GLOBAL SAFETY RULES
+
+- NEVER run `rm -rf`, `del /s`, `rmdir`, `format`, or any command that deletes files/directories without EXPLICIT user approval.
+- NEVER run `DROP TABLE`, `DELETE FROM`, `TRUNCATE`, or any destructive database operation without backup confirmation.
+- NEVER run `git push --force`, `git reset --hard`, or any command that rewrites shared history.
+- NEVER run `npm publish`, `docker rm`, `terraform destroy`, or any irreversible deployment command.
+- NEVER pipe remote scripts to shell (`curl | bash`, `wget | sh`).
+- ALWAYS show the command first and wait for approval before running anything that modifies system state.
+- When in doubt — show the command first, wait for approval.
+
+# 🧭 ACTIVE CONTEXT
+
+Source of truth: .neurosync/rules/neurosync_auto.md
+
+# 📝 NOTE: 19 uncommitted file(s) in working tree.
+
+# 📐 Conventions
+
+- convention in globals.css
+
+---
+*Auto-synced by NeuroSync 🧠 on June 28, 2026*
