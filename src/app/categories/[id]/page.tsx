@@ -8,12 +8,21 @@ export function generateStaticParams() {
   return categories.map((c) => ({ id: String(c.id) }));
 }
 
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const category = categories.find(c => c.slug === id || String(c.id) === id);
+  if (!category) return {};
+  return {
+    title: category.name,
+    description: category.description,
+  };
+}
+
 export default async function CategoryPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const categoryId = Number(id);
-  const category = getCategory(categoryId);
+  const category = getCategory(Number(id)) || categories.find(c => c.slug === id || String(c.id) === id);
   if (!category) return notFound();
-  const articles = getArticlesByCategory(categoryId);
+  const articles = getArticlesByCategory(Number(category.id));
 
   return (
     <div dir="rtl" className="min-h-screen" style={{ fontFamily: "'AlQabas Font', 'Cairo', 'Changa', 'IBM-Plex-Sans', sans-serif" }}>

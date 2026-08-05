@@ -1,8 +1,8 @@
 # ai-website-cloner-template — Project Memory
 
-Auto-synced | 75 observations
+Auto-synced | 268 observations
 
-Stack: TypeScript · Next.js · Tailwind
+Stack: TypeScript · Next.js · Prisma · Tailwind
 
 # 🏛️ CORE ARCHITECTURE
 
@@ -43,15 +43,27 @@ tell the agent to document the pattern here so it mathematically never repeats t
 
 Source of truth: .neurosync/rules/neurosync_auto.md
 
-# 📝 NOTE: 4 uncommitted file(s) in working tree.
+# 📝 NOTE: 38 uncommitted file(s) in working tree.
+
+# ⚠️ Important Warnings
+
+- gotcha in .env — File changed (external): .env
 
 # 📐 Conventions
 
 - convention in globals.css
+- convention in README.md — confirmed 2x
+- convention in globals.css — confirmed 2x
+
+# 🔀 Decisions
+
+- decision in docker-compose.yml
 
 # 🔁 Learned Patterns
 
-- what-changed in next-env.d.ts (seen 3x)
+- what-changed in auth-client.ts (seen 4x)
+- what-changed in alqabas.ts (seen 5x)
+- what-changed in page.tsx (seen 3x)
 
 ---
-*Auto-synced by NeuroSync 🧠 on June 28, 2026*
+*Auto-synced by NeuroSync 🧠 on August 5, 2026*

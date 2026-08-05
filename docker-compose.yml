@@ -1,4 +1,16 @@
 services:
+  postgres:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: alqabas
+      POSTGRES_PASSWORD: alqabas_password
+      POSTGRES_DB: alqabas_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
   app:
     build:
       context: .
@@ -51,3 +63,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 15s
+
+volumes:
+  postgres_data:

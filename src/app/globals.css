@@ -7,7 +7,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: "AlQabas-Regular", "AlQabas-Bold", "AlQabas-Light", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  --font-sans: "Tahoma", "Arial", sans-serif;
   --font-mono: "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace;
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -83,14 +83,46 @@
   --sidebar-ring: #005C9C;
   
   /* Al-Qabas Custom Colors */
-  --alqabas-blue: #005C9C;
-  --alqabas-blue-light: #00A3DA;
-  --alqabas-dark: #1E1E1E;
-  --alqabas-dark-header: #262626;
-  --alqabas-gray: #D0D0D0;
-  --alqabas-bg-light: #EFF3F5;
-  --alqabas-border: #DBDFE0;
+   --alqabas-blue: #005C9C;
+   --alqabas-blue-light: #00A3DA;
+   --alqabas-dark: #1E1E1E;
+   --alqabas-dark-header: #262626;
+   --alqabas-gray: #D0D0D0;
+   --alqabas-bg-light: #EFF3F5;
+   --alqabas-border: #DBDFE0;
+   --color-primary-rest: #005c9c;
+   --color-text-blue: #0260ae;
+   --color-button-blue: #0158a3;
+ }
+
+/* Arabic Font Faces - Using system fonts for now */
+/* To use custom fonts, add font files to /public/fonts/ and uncomment below */
+
+/*
+@font-face {
+  font-family: 'AlQabas-Regular';
+  src: url('/fonts/AlQabas-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
+
+@font-face {
+  font-family: 'AlQabas-Bold';
+  src: url('/fonts/AlQabas-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'AlQabas-Light';
+  src: url('/fonts/AlQabas-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+*/
 
 @layer base {
   * {
@@ -122,17 +154,24 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 15px;
-  border-radius: 15px;
-  height: 32px;
-  font-size: 13px;
-  font-weight: 500;
+  padding: 0 12px;
+  border-radius: 4px;
+  height: 28px;
+  font-size: 12px;
+  font-weight: 600;
   color: white;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   border: 1px solid transparent;
   transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.category-tag:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 /* Social Media Icon Container */
@@ -155,13 +194,21 @@
 .article-card {
   position: relative;
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: 0;
   cursor: pointer;
+  background: white;
+  border: 1px solid var(--alqabas-border);
+  transition: box-shadow 0.2s ease;
+}
+
+.article-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .article-card-image {
   position: relative;
   overflow: hidden;
+  aspect-ratio: 16 / 10;
 }
 
 .article-card-image img {
@@ -175,6 +222,50 @@
   transform: scale(1.05);
 }
 
+.article-card-content {
+  padding: 16px;
+}
+
+.article-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--alqabas-dark);
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.article-card-excerpt {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.article-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #999;
+}
+
+.article-card-category {
+  font-weight: 600;
+  color: var(--alqabas-blue);
+}
+
+.article-card-date {
+  color: #999;
+}
+
 /* Numbered Article Badge */
 .number-badge {
   position: absolute;
@@ -186,4 +277,272 @@
 
 .number-badge svg {
   display: block;
+}
+
+/* Marquee Animation */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 15s linear infinite;
+}
+
+/* Breaking News Ticker */
+.breaking-news-ticker {
+  background: #df1148;
+  color: white;
+  padding: 8px 0;
+  overflow: hidden;
+}
+
+.breaking-news-ticker .ticker-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.breaking-news-ticker .ticker-label {
+  background: white;
+  color: #df1148;
+  padding: 2px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.breaking-news-ticker .ticker-text {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Section Headers */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--alqabas-blue);
+}
+
+.section-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--alqabas-dark);
+  position: relative;
+  padding-right: 16px;
+}
+
+.section-header h2::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 24px;
+  background: var(--alqabas-blue);
+}
+
+.section-header a {
+  color: var(--alqabas-blue);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.section-header a:hover {
+  text-decoration: underline;
+}
+
+/* Side Widgets */
+.side-widget {
+  background: white;
+  border: 1px solid var(--alqabas-border);
+  margin-bottom: 20px;
+}
+
+.side-widget-header {
+  background: var(--alqabas-blue);
+  color: white;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.side-widget-content {
+  padding: 16px;
+}
+
+/* Top Bar */
+.top-bar {
+  background: #f5f5f5;
+  border-bottom: 1px solid var(--alqabas-border);
+  padding: 8px 0;
+  font-size: 13px;
+  color: #666;
+}
+
+.top-bar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.top-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.top-bar a {
+  color: var(--alqabas-blue);
+  text-decoration: none;
+}
+
+.top-bar a:hover {
+  text-decoration: underline;
+}
+
+/* Main Header */
+.main-header {
+  background: white;
+  border-bottom: 1px solid var(--alqabas-border);
+  padding: 16px 0;
+}
+
+.main-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--alqabas-blue);
+  text-decoration: none;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.main-nav a {
+  color: var(--alqabas-dark);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 8px 0;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+  color: var(--alqabas-blue);
+  border-bottom-color: var(--alqabas-blue);
+}
+
+/* Date Display */
+.date-display {
+  font-size: 13px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Footer */
+.site-footer {
+  background: var(--alqabas-dark);
+  color: #ccc;
+  padding: 48px 0 24px;
+  margin-top: 48px;
+}
+
+.site-footer h3 {
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.site-footer a {
+  color: #ccc;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.site-footer a:hover {
+  color: white;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.footer-bottom {
+  border-top: 1px solid #444;
+  padding-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #999;
+}
+
+.footer-bottom-links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-bottom-links a {
+  color: #999;
+}
+
+.footer-bottom-links a:hover {
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-nav {
+    display: none;
+  }
+  
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+  
+  .footer-bottom-links {
+    justify-content: center;
+  }
 }

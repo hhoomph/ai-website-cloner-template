@@ -1,171 +1,317 @@
-# AI Website Cloner Template
+# Al Qabas Newspaper Clone
 
-<a href="https://github.com/JCodesMore/ai-website-cloner-template/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License" /></a> <a href="https://github.com/JCodesMore/ai-website-cloner-template/stargazers"><img src="https://img.shields.io/github/stars/JCodesMore/ai-website-cloner-template?style=flat" alt="Stars" /></a> <a href="https://discord.gg/hrTSX5yTpB"><img src="https://img.shields.io/discord/1400896964597383279?label=discord" alt="Discord" /></a>
+A full-stack Arabic-language news platform built with Next.js 16, React 19, TypeScript, Tailwind CSS v4, Prisma, and NextAuth.js.
 
-A reusable template for reverse-engineering any website into a clean, modern Next.js codebase using AI coding agents. 
+## Features
 
-**Recommended: [Claude Code](https://docs.anthropic.com/en/docs/claude-code) with Opus 4.7 for best results** — but works with a variety of AI coding agents.
+### Core Features
+- 📰 **Article Management** - Full CRUD operations for articles with rich content support
+- 📱 **Responsive Design** - Mobile-first design with RTL support for Arabic content
+- 🔐 **Authentication** - NextAuth.js with credentials, Google OAuth, and Apple providers
+- 👥 **Role-Based Access Control** - ADMIN, EDITOR, and READER roles
+- 💳 **Subscription System** - Premium content access with subscription plans
+- 🔍 **Search** - Full-text search across articles, authors, and categories
+- 📊 **Admin Dashboard** - Complete CMS for content management
+- 🖼️ **Media Management** - Image and file upload system
+- 📈 **Analytics** - Page views, visitor tracking, and engagement metrics
+- 🌙 **Dark Mode Ready** - Theme system with custom Al Qabas branding
 
-Point it at a URL, run `/clone-website`, and your AI agent will inspect the site, extract design tokens and assets, write component specs, and dispatch parallel builders to reconstruct every section.
-
-## Demo
-
-[![Watch the demo](docs/design-references/comparison.png)](https://youtu.be/O669pVZ_qr0)
-
-> Click the image above to watch the full demo on YouTube.
-
-## Quick Start
-
-> **Important:** Start by making your own copy with GitHub's **Use this template** button. Do not clone this template repository directly for your website project, and do not open pull requests here with your generated website.
-
-1. **Create your own repository from this template**
-
-   On the GitHub page for this project, click **Use this template**, then click **Create a new repository**.
-
-   Give your new repository a name, choose whether it should be public or private, then click **Create repository**. If GitHub shows an **Include all branches** option, you can leave it off.
-
-   This gives you your own separate project to work in, so your website changes stay in your account instead of coming back to the main template.
-
-2. **Open your new repository on your computer**
-
-   After GitHub creates your copy, open that new repository. Click **Code** and open or clone your new repository with your preferred coding tool.
-
-   If you use the terminal, the command will look like this:
-
-   ```bash
-   git clone https://github.com/YOUR-USERNAME/YOUR-NEW-REPOSITORY.git
-   cd YOUR-NEW-REPOSITORY
-   ```
-
-3. **Install dependencies**
-   ```bash
-   npm install
-   ```
-4. **Start your AI agent** — Claude Code recommended:
-   ```bash
-   claude --chrome
-   ```
-5. **Run the skill**:
-   ```
-   /clone-website <target-url1> [<target-url2> ...]
-   ```
-6. **Customize** (optional) — after the base clone is built, modify as needed
-
-> Using a different agent? Open `AGENTS.md` for project instructions — most agents pick it up automatically.
-
-## Supported Platforms
-
-| Agent                                                         | Status                     |
-| ------------------------------------------------------------- | -------------------------- |
-| [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | **Recommended** — Opus 4.7 |
-| [Codex CLI](https://github.com/openai/codex)                  | Supported                  |
-| [OpenCode](https://opencode.ai/)                              | Supported                  |
-| [GitHub Copilot](https://github.com/features/copilot)         | Supported                  |
-| [Cursor](https://cursor.com/)                                 | Supported                  |
-| [Windsurf](https://codeium.com/windsurf)                      | Supported                  |
-| [Gemini CLI](https://github.com/google-gemini/gemini-cli)     | Supported                  |
-| [Cline](https://github.com/cline/cline)                       | Supported                  |
-| [Roo Code](https://github.com/RooCodeInc/Roo-Code)            | Supported                  |
-| [Continue](https://continue.dev/)                             | Supported                  |
-| [Amazon Q](https://aws.amazon.com/q/developer/)               | Supported                  |
-| [Augment Code](https://www.augmentcode.com/)                  | Supported                  |
-| [Aider](https://aider.chat/)                                  | Supported                  |
-
-## Prerequisites
-
-- [Node.js](https://nodejs.org/) 24+
-- An AI coding agent (see [Supported Platforms](#supported-platforms))
+### Technical Features
+- **Next.js 16** with App Router and React Server Components
+- **Prisma ORM** with PostgreSQL database
+- **TypeScript** strict mode with comprehensive type safety
+- **Zod Validation** for all API inputs
+- **NextAuth.js** for secure authentication
+- **Tailwind CSS v4** with custom theme configuration
+- **RTL Support** for Arabic language
+- **SEO Optimized** with meta tags and structured data
 
 ## Tech Stack
 
-- **Next.js 16** — App Router, React 19, TypeScript strict
-- **shadcn/ui** — Radix primitives + Tailwind CSS v4
-- **Tailwind CSS v4** — oklch design tokens
-- **Lucide React** — default icons (replaced by extracted SVGs during cloning)
+### Frontend
+- **Framework**: Next.js 16 (App Router)
+- **UI Library**: React 19
+- **Styling**: Tailwind CSS v4
+- **Icons**: Lucide React
+- **Forms**: React Hook Form with Zod resolvers
+- **Tables**: TanStack React Table
+- **File Upload**: React Dropzone
 
-## How It Works
+### Backend
+- **Runtime**: Node.js 24+
+- **ORM**: Prisma 6
+- **Authentication**: NextAuth.js 4
+- **Validation**: Zod 3
+- **Password Hashing**: bcryptjs
+- **Image Processing**: Sharp
+- **File Storage**: AWS SDK S3 (optional)
 
-The `/clone-website` skill runs a multi-phase pipeline:
+### Database
+- **Primary Database**: PostgreSQL 16
+- **Cache**: Redis (optional)
 
-1. **Reconnaissance** — screenshots, design token extraction, interaction sweep (scroll, click, hover, responsive)
-2. **Foundation** — updates fonts, colors, globals, downloads all assets
-3. **Component Specs** — writes detailed spec files (`docs/research/components/`) with exact computed CSS values, states, behaviors, and content
-4. **Parallel Build** — dispatches builder agents in git worktrees, one per section/component
-5. **Assembly & QA** — merges worktrees, wires up the page, runs visual diff against the original
+## Getting Started
 
-Each builder agent receives the full component specification inline — exact `getComputedStyle()` values, interaction models, multi-state content, responsive breakpoints, and asset paths. No guessing.
+### Prerequisites
 
-## Use Cases
+- Node.js >= 24
+- PostgreSQL 16+ (or Docker)
+- npm or yarn or pnpm or bun
 
-- **Platform migration** — rebuild a site you own from WordPress/Webflow/Squarespace into a modern Next.js codebase
-- **Lost source code** — your site is live but the repo is gone, the developer left, or the stack is legacy. Get the code back in a modern format
-- **Learning** — deconstruct how production sites achieve specific layouts, animations, and responsive behavior by working with real code
+### Installation
 
-## Not Intended For
+1. **Clone the repository**
+```bash
+git clone https://github.com/yourusername/alqabas-clone.git
+cd alqabas-clone
+```
 
-- **Phishing or impersonation** — this project must not be used for deceptive purposes, impersonation, or any activity that breaks the law.
-- **Passing off someone's design as your own** — logos, brand assets, and original copy belong to their owners.
-- **Violating terms of service** — some sites explicitly prohibit scraping or reproduction. Check first.
+2. **Install dependencies**
+```bash
+bun install
+```
+
+3. **Set up environment variables**
+```bash
+cp .env.example .env
+```
+
+Edit `.env` and configure:
+- `DATABASE_URL` - PostgreSQL connection string
+- `NEXTAUTH_SECRET` - Random secret for NextAuth (min 32 chars)
+- `NEXTAUTH_URL` - Your app URL
+- Optional: OAuth providers, email server, S3 credentials
+
+4. **Start PostgreSQL database**
+
+Option A: Using Docker (recommended)
+```bash
+docker-compose up -d postgres
+```
+
+Option B: Using local PostgreSQL
+```bash
+# Make sure PostgreSQL is running and create database:
+createdb alqabas_db
+```
+
+5. **Initialize database**
+```bash
+# Generate Prisma client
+bun run prisma:generate
+
+# Run migrations
+bun run prisma:migrate
+
+# Seed database with initial data
+bun run prisma:seed
+```
+
+6. **Start development server**
+```bash
+bun run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Project Structure
 
 ```
 src/
-  app/              # Next.js routes
-  components/       # React components
-    ui/             # shadcn/ui primitives
-    icons.tsx       # Extracted SVG icons
-  lib/utils.ts      # cn() utility
-  types/            # TypeScript interfaces
-  hooks/            # Custom React hooks
+├── app/
+│   ├── api/                    # API routes
+│   │   ├── articles/           # Articles CRUD
+│   │   ├── categories/         # Categories CRUD
+│   │   ├── authors/            # Authors CRUD
+│   │   ├── auth/               # Authentication routes
+│   │   ├── admin/              # Admin API routes
+│   │   ├── search/             # Search endpoint
+│   │   └── media/              # Media management
+│   ├── _components/            # Shared client components
+│   ├── globals.css             # Global styles
+│   ├── layout.tsx              # Root layout
+│   └── page.tsx                # Homepage
+├── components/
+│   ├── shared/                 # Shared UI components
+│   │   ├── Header.tsx
+│   │   ├── Footer.tsx
+│   │   └── ArticleCard.tsx
+│   ├── admin/                  # Admin dashboard components
+│   └── auth/                   # Authentication components
+├── lib/
+│   ├── prisma.ts               # Prisma client singleton
+│   ├── auth.ts                 # NextAuth configuration
+│   ├── db/
+│   │   └── queries.ts          # Database query functions
+│   └── utils.ts                # Utility functions
+├── types/
+│   ├── alqabas.ts              # TypeScript interfaces
+│   └── next-auth.d.ts          # NextAuth type extensions
+└── middleware.ts               # Route middleware
+
+prisma/
+├── schema.prisma               # Database schema
+└── seed.ts                     # Database seed script
+
 public/
-  images/           # Downloaded images from target
-  videos/           # Downloaded videos from target
-  seo/              # Favicons, OG images
-docs/
-  research/         # Extraction output & component specs
-  design-references/ # Screenshots
-scripts/
-  sync-agent-rules.sh  # Regenerate agent instruction files
-  sync-skills.mjs      # Regenerate /clone-website for all platforms
-AGENTS.md           # Agent instructions (single source of truth)
-CLAUDE.md           # Claude Code config (imports AGENTS.md)
-GEMINI.md           # Gemini CLI config (imports AGENTS.md)
+├── images/                     # Image assets
+├── videos/                     # Video assets
+└── seo/                        # SEO assets
 ```
 
-## Commands
+## API Endpoints
+
+### Public Endpoints
+- `GET /api/articles` - List articles
+- `GET /api/articles/[slug]` - Get article by slug
+- `GET /api/categories` - List categories
+- `GET /api/categories/[id]` - Get category by ID
+- `GET /api/authors` - List authors
+- `GET /api/search` - Search content
+- `GET /api/media` - List media files
+- `GET /api/subscription-plans` - List subscription plans
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login user
+- `POST /api/auth/subscription` - Create subscription
+
+### Admin Endpoints (require ADMIN or SUPERADMIN role)
+- `GET /api/admin/articles` - List all articles (including drafts)
+- `POST /api/admin/articles` - Create article
+- `PUT /api/admin/articles/[slug]` - Update article
+- `DELETE /api/admin/articles/[slug]` - Delete article
+- `GET /api/admin/categories` - List all categories
+- `POST /api/admin/categories` - Create category
+- `GET /api/admin/authors` - List all authors
+- `POST /api/admin/authors` - Create author
+- `GET /api/admin/users` - List all users
+- `POST /api/admin/users` - Create user
+- `GET /api/admin/media` - List all media
+- `POST /api/admin/media` - Upload media
+- `GET /api/admin/settings` - Get site settings
+- `PUT /api/admin/settings` - Update settings
+- `GET /api/admin/analytics` - Get dashboard analytics
+
+## Scripts
 
 ```bash
-npm run dev    # Start dev server
-npm run build  # Production build
-npm run lint   # ESLint check
-npm run typecheck # TypeScript check
-npm run check  # Run lint + typecheck + build
+# Development
+bun run dev              # Start development server
+
+# Building
+bun run build            # Build for production
+bun run start            # Start production server
+
+# Code Quality
+bun run lint             # Run ESLint
+bun run typecheck        # Run TypeScript check
+bun run check            # Run lint + typecheck + build
+
+# Database
+bun run prisma:generate  # Generate Prisma client
+bun run prisma:migrate   # Run database migrations
+bun run prisma:seed      # Seed database
+bun run prisma:studio    # Open Prisma Studio
 ```
 
-### If using docker
+## Database Schema
 
+The application uses a comprehensive database schema with the following main models:
+
+- **User** - User accounts with roles and preferences
+- **Article** - News articles with rich content
+- **Category** - Article categories with hierarchy support
+- **Author** - Article authors
+- **Tag** - Article tags
+- **Comment** - User comments on articles
+- **Subscription** - User subscriptions
+- **SubscriptionPlan** - Available subscription plans
+- **Media** - Uploaded media files
+- **Gallery** - Image galleries
+- **Podcast** - Podcast episodes
+- **Issue** - Newspaper issues (PDF)
+- **BreakingNews** - Breaking news ticker items
+- **SiteSettings** - Configurable site settings
+- **Analytics** - Visitor analytics data
+- **Activity** - User activity log
+
+## Authentication & Authorization
+
+### User Roles
+- **READER** - Can read articles, manage profile
+- **EDITOR** - Can create and edit articles
+- **ADMIN** - Full access to admin dashboard
+- **SUPERADMIN** - Complete system access
+
+### Authentication Methods
+- Email/Password (credentials)
+- Google OAuth
+- Apple OAuth
+
+## Deployment
+
+### Vercel (Recommended)
+1. Push code to GitHub
+2. Import project in Vercel
+3. Configure environment variables
+4. Deploy
+
+### Docker
 ```bash
-docker compose up app --build # build and run the app
-docker compose up dev --build # run the app in dev mode on port 3001
+# Build image
+docker build -t alqabas-app .
+
+# Run container
+docker run -p 3000:3000 \
+  -e DATABASE_URL="your-db-url" \
+  -e NEXTAUTH_SECRET="your-secret" \
+  alqabas-app
 ```
 
-## Updating for Other Platforms
+### Manual Deployment
+```bash
+# Build the application
+bun run build
 
-Two source-of-truth files power all platform support. Edit the source, then run the sync script:
+# Start production server
+bun run start
+```
 
-| What                   | Source of truth                         | Sync command                       |
-| ---------------------- | --------------------------------------- | ---------------------------------- |
-| Project instructions   | `AGENTS.md`                             | `bash scripts/sync-agent-rules.sh` |
-| `/clone-website` skill | `.claude/skills/clone-website/SKILL.md` | `node scripts/sync-skills.mjs`     |
+## Environment Variables
 
-Each script regenerates the platform-specific copies automatically. Agents that read the source files natively need no regeneration.
+See `.env.example` for all available configuration options.
 
+## Contributing
 
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=JCodesMore/ai-website-cloner-template&type=Date)](https://star-history.com/#JCodesMore/ai-website-cloner-template&Date)
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
-MIT
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Support
+
+For support, email info@alqabas.com or create an issue in the repository.
+
+## Roadmap
+
+- [ ] Implement advanced search with filters
+- [ ] Add comment system with moderation
+- [ ] Build admin dashboard UI
+- [ ] Implement image gallery with lightbox
+- [ ] Add podcast player
+- [ ] Implement newsletter system
+- [ ] Add social sharing buttons
+- [ ] Implement RSS feeds
+- [ ] Add multi-language support
+- [ ] Implement push notifications
+
+## Acknowledgments
+
+- Design inspired by [Al Qabas](https://www.alqabas.com)
+- Built with [Next.js](https://nextjs.org/)
+- UI components from [shadcn/ui](https://ui.shadcn.com/)
+- Icons from [Lucide](https://lucide.dev/)

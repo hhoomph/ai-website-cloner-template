@@ -1,0 +1,422 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  name          String
+  phone         String?
+  avatar        String?
+  role          UserRole  @default(READER)
+  emailVerified Boolean   @default(false)
+  password      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  subscription   Subscription?
+  preferences    UserPreferences?
+  socialLinks    SocialLinks?
+  comments       Comment[]
+  mediaUploads   Media[]      @relation("UploadedBy")
+  sessions       Session[]
+  accounts       Account[]
+  verifications  Verification[]
+
+  @@map("users")
+}
+
+model UserPreferences {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  topics       String[]
+  newsletter   Boolean  @default(false)
+  notifications Boolean @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_preferences")
+}
+
+model SocialLinks {
+  id         String   @id @default(uuid())
+  userId     String   @unique
+  twitter    String?
+  facebook   String?
+  instagram  String?
+  linkedin   String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("social_links")
+}
+
+model Subscription {
+  id          String           @id @default(uuid())
+  userId      String           @unique
+  planId      String
+  status      SubscriptionStatus @default(PENDING)
+  startDate   DateTime         @default(now())
+  endDate     DateTime
+  autoRenew   Boolean          @default(false)
+  paymentId   String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  user   User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan   SubscriptionPlan @relation(fields: [planId], references: [id])
+
+  @@map("subscriptions")
+}
+
+model SubscriptionPlan {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String   @db.Text
+  price       Float
+  currency    String   @default("USD")
+  durationDays Int
+  features    String[]
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  subscriptions Subscription[]
+
+  @@map("subscription_plans")
+}
+
+model Category {
+  id           String   @id @default(uuid())
+  name         String
+  slug         String   @unique
+  description  String   @db.Text
+  color        String
+  gradient     String
+  image        String?
+  parentId     String?
+  order        Int      @default(0)
+  isActive     Boolean  @default(true)
+  articleCount Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  parent   Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryHierarchy")
+  articles Article[]
+  galleries Gallery[]
+  podcasts  Podcast[]
+  media     Media[]
+
+  @@map("categories")
+}
+
+model Author {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  avatar      String?
+  title       String
+  bio         String   @db.Text
+  email       String
+  articleCount Int     @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  articles Article[]
+
+  @@map("authors")
+}
+
+model Article {
+  id          String     @id @default(uuid())
+  title       String     @db.Text
+  slug        String     @unique
+  summary     String     @db.Text
+  content     String     @db.Text
+  excerpt     String     @db.Text
+  featuredImage String
+  images      String[]
+  categoryId  String
+  authorId    String
+  publishedAt DateTime?
+  updatedAt   DateTime   @updatedAt
+  breakingNews Boolean   @default(false)
+  isPremium   Boolean    @default(false)
+  isFeatured  Boolean    @default(false)
+  views       Int        @default(0)
+  likes       Int        @default(0)
+  seoTitle    String?
+  seoDescription String?
+  redirectUri String?
+  videoUrl    String?
+  audioUrl    String?
+  createdAt   DateTime   @default(now())
+
+  // Relations
+  category   Category   @relation(fields: [categoryId], references: [id])
+  author     Author     @relation(fields: [authorId], references: [id])
+  tags       ArticleTag[]
+  comments   Comment[]
+
+  @@map("articles")
+}
+
+model Tag {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+
+  // Relations
+  articles ArticleTag[]
+
+  @@map("tags")
+}
+
+model ArticleTag {
+  id        String   @id @default(uuid())
+  articleId String
+  tagId     String
+  createdAt DateTime @default(now())
+
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@unique([articleId, tagId])
+  @@map("article_tags")
+}
+
+model Comment {
+  id        String        @id @default(uuid())
+  articleId String
+  userId    String
+  userName  String
+  content   String        @db.Text
+  status    CommentStatus @default(PENDING)
+  createdAt DateTime      @default(now())
+
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("comments")
+}
+
+model Gallery {
+  id          String   @id @default(uuid())
+  title       String   @db.Text
+  slug        String   @unique
+  description String   @db.Text
+  coverImage  String
+  categoryId  String
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+
+  category Category       @relation(fields: [categoryId], references: [id])
+  images   GalleryImage[]
+
+  @@map("galleries")
+}
+
+model GalleryImage {
+  id       String   @id @default(uuid())
+  galleryId String
+  url      String
+  caption  String   @db.Text
+  alt      String   @db.Text
+  order    Int      @default(0)
+  createdAt DateTime @default(now())
+
+  gallery Gallery @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+
+  @@map("gallery_images")
+}
+
+model Podcast {
+  id          String   @id @default(uuid())
+  title       String   @db.Text
+  slug        String   @unique
+  description String   @db.Text
+  coverImage  String
+  audioUrl    String
+  duration    String
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  categoryId  String
+  host        String
+
+  category Category @relation(fields: [categoryId], references: [id])
+
+  @@map("podcasts")
+}
+
+model Issue {
+  id          String   @id @default(uuid())
+  date        String
+  issueNumber Int      @unique
+  pdfUrl      String
+  coverImage  String
+  isPremium   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@map("issues")
+}
+
+model Media {
+  id           String   @id @default(uuid())
+  filename     String
+  originalName String
+  mimeType     String
+  size         Int
+  url          String
+  thumbnailUrl String?
+  alt          String?
+  caption      String?
+  categoryId   String?
+  uploadedById String
+  createdAt    DateTime @default(now())
+
+  category Category?  @relation(fields: [categoryId], references: [id])
+  uploader User       @relation("UploadedBy", fields: [uploadedById], references: [id])
+
+  @@map("media")
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Account {
+  id                    String    @id @default(uuid())
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  expiresAt             DateTime?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, accountId])
+  @@map("accounts")
+}
+
+model Verification {
+  id         String   @id @default(uuid())
+  userId     String
+  email      String
+  secret     String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("verifications")
+}
+
+model SiteSetting {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  value       String   @db.Text
+  type        SettingType @default(STRING)
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+model BreakingNews {
+  id        String   @id @default(uuid())
+  title     String   @db.Text
+  articleId String?
+  link      String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@map("breaking_news")
+}
+
+model Activity {
+  id        String   @id @default(uuid())
+  userId    String?
+  action    String
+  entityType String
+  entityId   String
+  metadata  String? @db.Text
+  createdAt DateTime @default(now())
+
+  @@map("activities")
+}
+
+model Analytics {
+  id         String   @id @default(uuid())
+  page       String
+  visitorId  String
+  sessionId  String?
+  device     String?
+  browser    String?
+  os         String?
+  country    String?
+  city       String?
+  duration   Int?
+  bounce     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  @@map("analytics")
+}
+
+enum UserRole {
+  READER
+  EDITOR
+  ADMIN
+  SUPERADMIN
+}
+
+enum SubscriptionStatus {
+  PENDING
+  ACTIVE
+  CANCELLED
+  EXPIRED
+}
+
+enum CommentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum SettingType {
+  STRING
+  NUMBER
+  BOOLEAN
+  JSON
+}

@@ -31,10 +31,10 @@ export default function ArchivePage() {
             {articles.slice(0, 8).map((article) => (
               <Link key={article.id} href={`/article/${article.id}`} className="bg-white rounded-sm overflow-hidden shadow-sm border border-gray-100 group cursor-pointer block">
                 <div className="relative aspect-[4/3] overflow-hidden">
-                  <img src={article.image} alt={article.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                  <img src={article.featuredImage} alt={article.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
                 </div>
                 <div className="p-3">
-                  <span className="inline-block px-2 py-0.5 text-[10px] text-white rounded-full mb-1" style={{ background: article.categoryColor }}>{article.categoryName}</span>
+                  <span className="inline-block px-2 py-0.5 text-[10px] text-white rounded-full mb-1" style={{ background: article.category.gradient }}>{article.category.name}</span>
                   <h3 className="text-sm font-bold text-gray-900 leading-snug line-clamp-2">{article.title}</h3>
                 </div>
               </Link>

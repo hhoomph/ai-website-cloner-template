@@ -24,7 +24,7 @@ export default function MasterClassPage() {
                 {premium.map((article) => (
                   <div key={article.id} className="bg-white rounded-sm border border-gray-200 p-4 flex gap-4 shadow-sm">
                     <div className="w-32 h-24 flex-shrink-0 overflow-hidden rounded-sm">
-                      <img src={article.image} alt={article.title} className="w-full h-full object-cover" />
+                      <img src={article.featuredImage} alt={article.title} className="w-full h-full object-cover" />
                     </div>
                     <div>
                       <h3 className="font-bold text-sm leading-snug line-clamp-2">{article.title}</h3>
