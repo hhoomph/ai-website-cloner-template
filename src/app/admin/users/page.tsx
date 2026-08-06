@@ -68,8 +68,10 @@ export default function AdminUsersPage() {
     }
 
     try {
-      const response = await fetch(`/api/admin/users/${userId}`, {
+      const response = await fetch(`/api/admin/users`, {
         method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId }),
       })
 
       if (response.ok) {
