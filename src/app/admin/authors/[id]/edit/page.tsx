@@ -42,7 +42,7 @@ export default function EditAuthorPage() {
           title: data.title || '',
           bio: data.bio || '',
           avatar: data.avatar || '',
-          isActive: data.isActive,
+          isActive: data.isActive ?? true,
         })
       } else {
         setError(data.error || 'Failed to load author')
@@ -134,12 +134,21 @@ export default function EditAuthorPage() {
                   onChange={(e) => updateField('title', e.target.value)}
                 />
               </div>
-              <div>
+              <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Avatar URL</label>
                 <Input
                   value={form.avatar}
                   onChange={(e) => updateField('avatar', e.target.value)}
                 />
+                {form.avatar && (
+                  <div className="mt-2">
+                    <img
+                      src={form.avatar}
+                      alt="Avatar preview"
+                      className="w-16 h-16 rounded-full object-cover border border-gray-200"
+                    />
+                  </div>
+                )}
               </div>
             </div>
 

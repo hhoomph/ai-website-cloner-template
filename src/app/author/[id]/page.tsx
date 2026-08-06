@@ -2,10 +2,12 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Header from "@/components/alqabas/Header";
 import Footer from "@/components/alqabas/Footer";
-import { getAuthor, getArticlesByAuthor, authors } from '@/lib/alqabas-data'
+import { getAuthor, getArticlesByAuthor } from '@/lib/data-adapter'
+
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
-  const author = getAuthor(Number(params.id))
+  const author = await getAuthor(params.id)
 
   if (!author) return { title: 'Author Not Found' }
 
@@ -16,8 +18,8 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 }
 
 export default async function AuthorPage({ params }: { params: { id: string } }) {
-  const author = getAuthor(Number(params.id))
-  const articles = getArticlesByAuthor(Number(params.id))
+  const author = await getAuthor(params.id)
+  const articles = author ? await getArticlesByAuthor(author.id) : []
 
   if (!author) {
     notFound()
@@ -64,7 +66,7 @@ export default async function AuthorPage({ params }: { params: { id: string } })
                   )}
                   <div className="p-4">
                     <h2 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2">
-                      <Link href={`/article/${article.id}`} className="hover:text-[#005C9D] transition-colors">
+                      <Link href={`/article/${article.slug}`} className="hover:text-[#005C9D] transition-colors">
                         {article.title}
                       </Link>
                     </h2>

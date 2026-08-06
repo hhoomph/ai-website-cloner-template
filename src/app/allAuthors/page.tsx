@@ -1,9 +1,19 @@
 import Header from "@/components/alqabas/Header";
 import Footer from "@/components/alqabas/Footer";
-import { authors, articles, getArticlesByAuthor } from "@/lib/alqabas-data";
+import { getAuthors, getArticlesByAuthor } from "@/lib/data-adapter";
+import type { Article } from "@/types/alqabas";
 import Link from "next/link";
 
-export default function AuthorsPage() {
+export const dynamic = 'force-dynamic'
+
+export default async function AuthorsPage() {
+  const authors = await getAuthors();
+
+  // Fetch articles for all authors in parallel before rendering
+  const authorArticleLists = await Promise.all(
+    authors.map(author => getArticlesByAuthor(author.id))
+  );
+
   return (
     <div dir="rtl" className="min-h-screen" style={{ fontFamily: "'AlQabas Font', 'Cairo', 'Changa', 'IBM-Plex-Sans', sans-serif" }}>
       <Header />
@@ -16,8 +26,8 @@ export default function AuthorsPage() {
         </div>
         <section className="max-w-7xl mx-auto px-4 py-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {authors.map((author) => {
-              const authorArticles = getArticlesByAuthor(author.id);
+            {authors.map((author, index) => {
+              const authorArticles = authorArticleLists[index] || [];
               return (
                 <div key={author.id} className="bg-white rounded-sm border border-gray-100 p-6 shadow-sm">
                   <div className="flex items-start gap-4">
@@ -31,18 +41,18 @@ export default function AuthorsPage() {
                       <p className="text-xs text-[#005C9D] mt-2">{author.articleCount} مقال</p>
                     </div>
                   </div>
-                  {authorArticles.length > 0 && (
-                    <div className="mt-4 pt-4 border-t border-gray-100">
-                      <p className="text-xs font-bold text-gray-700 mb-2">أحدث المقالات:</p>
-                      <div className="space-y-2">
-                        {authorArticles.slice(0, 3).map((article) => (
-                          <Link key={article.id} href={`/article/${article.id}`} className="block text-xs text-gray-700 hover:text-[#005C9D] transition-colors line-clamp-1">
-                            {article.title}
-                          </Link>
-                        ))}
+                    {authorArticles.length > 0 && (
+                      <div className="mt-4 pt-4 border-t border-gray-100">
+                        <p className="text-xs font-bold text-gray-700 mb-2">أحدث المقالات:</p>
+                        <div className="space-y-2">
+                          {authorArticles.slice(0, 3).map((article: Article) => (
+                            <Link key={article.id} href={`/article/${article.slug}`} className="block text-xs text-gray-700 hover:text-[#005C9D] transition-colors line-clamp-1">
+                              {article.title}
+                            </Link>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
                 </div>
               );
             })}

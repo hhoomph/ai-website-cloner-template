@@ -1,6 +1,6 @@
 # ai-website-cloner-template — Project Memory
 
-Auto-synced | 297 observations
+Auto-synced | 319 observations
 
 Stack: TypeScript · Next.js · Prisma · Tailwind
 
@@ -43,7 +43,7 @@ tell the agent to document the pattern here so it mathematically never repeats t
 
 Source of truth: .neurosync/rules/neurosync_auto.md
 
-# 📝 NOTE: 17 uncommitted file(s) in working tree.
+# 📝 NOTE: 19 uncommitted file(s) in working tree.
 
 # ⚠️ Important Warnings
 
@@ -61,9 +61,9 @@ Source of truth: .neurosync/rules/neurosync_auto.md
 
 # 🔁 Learned Patterns
 
+- what-changed in layout.tsx (seen 4x)
 - what-changed in auth-client.ts (seen 4x)
 - what-changed in alqabas.ts (seen 5x)
-- what-changed in page.tsx (seen 3x)
 
 ---
 *Auto-synced by NeuroSync 🧠 on August 6, 2026*

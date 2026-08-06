@@ -1,17 +1,19 @@
 import Header from "@/components/alqabas/Header";
 import Footer from "@/components/alqabas/Footer";
 import { ArticleCard } from "@/components/alqabas/ArticleCard";
-import { searchArticles } from "@/lib/alqabas-data";
+import { searchArticles } from "@/lib/data-adapter";
 import { Suspense } from "react";
 
+export const dynamic = 'force-dynamic'
+
 async function SearchResults({ query }: { query: string }) {
-  const results = query ? searchArticles(query) : [];
+  const results = query ? await searchArticles(query) : [];
   if (!query) return <p className="text-center text-gray-500 py-12">أدخل كلمة للبحث</p>;
   if (results.length === 0) return <p className="text-center text-gray-500 py-12">لا توجد نتائج</p>;
   return <ArticleGridWithResults results={results} />;
 }
 
-function ArticleGridWithResults({ results }: { results: ReturnType<typeof searchArticles> }) {
+function ArticleGridWithResults({ results }: { results: Awaited<ReturnType<typeof searchArticles>> }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {results.map((article) => (

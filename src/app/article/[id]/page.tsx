@@ -2,11 +2,13 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Header from "@/components/alqabas/Header";
 import Footer from "@/components/alqabas/Footer";
-import { getArticle } from '@/lib/alqabas-data'
+import { getArticle } from '@/lib/data-adapter'
 import type { Article } from '@/types/alqabas'
 
+export const dynamic = 'force-dynamic'
+
 export async function generateMetadata({ params }: { params: { id: string } }) {
-  const article = getArticle(params.id)
+  const article = await getArticle(params.id)
 
   if (!article) return { title: 'Article Not Found' }
 
@@ -17,7 +19,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 }
 
 export default async function ArticlePage({ params }: { params: { id: string } }) {
-  const article = getArticle(params.id) as Article | undefined
+  const article = (await getArticle(params.id)) as Article | undefined
 
   if (!article) {
     notFound()

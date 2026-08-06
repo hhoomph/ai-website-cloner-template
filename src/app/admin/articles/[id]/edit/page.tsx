@@ -5,7 +5,7 @@ import { useRouter, useParams } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { ArrowLeft, Save } from 'lucide-react'
+import { ArrowLeft, Save, Bold, Italic, Underline, List, Heading1, Quote, Link2 } from 'lucide-react'
 import Link from 'next/link'
 
 interface Category {
@@ -126,6 +126,16 @@ export default function EditArticlePage() {
     setForm(prev => ({ ...prev, [field]: value }))
   }
 
+  const insertFormat = (before: string, after = '') => {
+    const textarea = document.querySelector('textarea[aria-label="content"]') as HTMLTextAreaElement | null
+    if (!textarea) return
+    const start = textarea.selectionStart ?? 0
+    const end = textarea.selectionEnd ?? 0
+    const selected = form.content.slice(start, end)
+    const next = form.content.slice(0, start) + before + selected + after + form.content.slice(end)
+    updateField('content', next)
+  }
+
   if (loading) {
     return <div className="text-center py-8 text-gray-500">Loading...</div>
   }
@@ -191,7 +201,7 @@ export default function EditArticlePage() {
                   ))}
                 </select>
               </div>
-              <div>
+              <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Featured Image URL *</label>
                 <Input
                   required
@@ -199,6 +209,15 @@ export default function EditArticlePage() {
                   value={form.featuredImage}
                   onChange={(e) => updateField('featuredImage', e.target.value)}
                 />
+                {form.featuredImage && (
+                  <div className="mt-2">
+                    <img
+                      src={form.featuredImage}
+                      alt="Featured preview"
+                      className="w-full max-h-64 object-cover rounded border border-gray-200"
+                    />
+                  </div>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Publish Date</label>
@@ -234,13 +253,39 @@ export default function EditArticlePage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Content *</label>
-              <textarea
-                required
-                value={form.content}
-                onChange={(e) => updateField('content', e.target.value)}
-                rows={10}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary font-mono"
-              />
+              <div className="border border-gray-300 rounded-md overflow-hidden">
+                <div className="flex items-center gap-1 p-1 bg-gray-50 border-b border-gray-200 flex-wrap">
+                  <button type="button" className="p-1.5 rounded hover:bg-gray-200" onClick={() => insertFormat('**', '**')} title="Bold">
+                    <Bold className="w-4 h-4" />
+                  </button>
+                  <button type="button" className="p-1.5 rounded hover:bg-gray-200" onClick={() => insertFormat('*', '*')} title="Italic">
+                    <Italic className="w-4 h-4" />
+                  </button>
+                  <button type="button" className="p-1.5 rounded hover:bg-gray-200" onClick={() => insertFormat('<u>', '</u>')} title="Underline">
+                    <Underline className="w-4 h-4" />
+                  </button>
+                  <button type="button" className="p-1.5 rounded hover:bg-gray-200" onClick={() => insertFormat('\n> ')} title="Quote">
+                    <Quote className="w-4 h-4" />
+                  </button>
+                  <button type="button" className="p-1.5 rounded hover:bg-gray-200" onClick={() => insertFormat('# ')} title="Heading">
+                    <Heading1 className="w-4 h-4" />
+                  </button>
+                  <button type="button" className="p-1.5 rounded hover:bg-gray-200" onClick={() => insertFormat('- ')} title="List">
+                    <List className="w-4 h-4" />
+                  </button>
+                  <button type="button" className="p-1.5 rounded hover:bg-gray-200" onClick={() => insertFormat('[', '](url)')} title="Link">
+                    <Link2 className="w-4 h-4" />
+                  </button>
+                </div>
+                <textarea
+                  required
+                  value={form.content}
+                  onChange={(e) => updateField('content', e.target.value)}
+                  rows={12}
+                  aria-label="content"
+                  className="w-full px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary font-mono"
+                />
+              </div>
             </div>
 
             <div className="flex flex-wrap gap-6">

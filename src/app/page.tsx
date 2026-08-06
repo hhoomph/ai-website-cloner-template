@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { HomePageClient } from './_components/HomePageClient'
-import { getFeaturedArticles, getRecentArticles, categories, getBreakingNews, getMostReadArticles } from '@/lib/alqabas-data'
+import { getFeaturedArticles, getRecentArticles, getBreakingNews, getMostReadArticles, getCategories } from '@/lib/data-adapter'
 
 export const metadata: Metadata = {
   title: 'القبس - موقع القبس الإخباري',
@@ -8,18 +8,24 @@ export const metadata: Metadata = {
   keywords: ['أخبار', 'صحافة', 'القبس', 'الكويت', 'الشرق الأوسط'],
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function HomePage() {
-  const featuredArticles = getFeaturedArticles()
-  const recentArticles = getRecentArticles(12)
-  const breakingNews = getBreakingNews()
-  const mostRead = getMostReadArticles(5)
+  const [featuredArticles, recentArticles, breakingNews, mostRead, categories] = await Promise.all([
+    getFeaturedArticles(),
+    getRecentArticles(12),
+    getBreakingNews(),
+    getMostReadArticles(5),
+    getCategories(),
+  ])
+
   const data = {
     settings: {},
-    featuredArticles: featuredArticles,
-    breakingNews: breakingNews,
-    recentArticles: recentArticles,
-    categories: categories,
-    mostRead: mostRead,
+    featuredArticles,
+    breakingNews,
+    recentArticles,
+    categories,
+    mostRead,
   }
 
   return (

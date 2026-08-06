@@ -1,16 +1,14 @@
 import Header from "@/components/alqabas/Header";
 import Footer from "@/components/alqabas/Footer";
 import { ArticleCard } from "@/components/alqabas/ArticleCard";
-import { categories, getArticlesByCategory, getCategory } from "@/lib/alqabas-data";
+import { getArticlesByCategory, getCategory } from "@/lib/data-adapter";
 import { notFound } from "next/navigation";
 
-export function generateStaticParams() {
-  return categories.map((c) => ({ id: String(c.id) }));
-}
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const category = categories.find(c => c.slug === id || String(c.id) === id);
+  const category = await getCategory(id);
   if (!category) return {};
   return {
     title: category.name,
@@ -20,9 +18,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function CategoryPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const category = getCategory(Number(id)) || categories.find(c => c.slug === id || String(c.id) === id);
+  const category = await getCategory(id);
   if (!category) return notFound();
-  const articles = getArticlesByCategory(Number(category.id));
+  const articles = await getArticlesByCategory(category.id);
 
   return (
     <div dir="rtl" className="min-h-screen" style={{ fontFamily: "'AlQabas Font', 'Cairo', 'Changa', 'IBM-Plex-Sans', sans-serif" }}>

@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import { 
   LayoutDashboard, 
   FileText, 
@@ -17,6 +17,13 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { authClient } from '@/lib/better-auth/auth-client'
+import type { Session } from '@/lib/better-auth'
+
+interface User {
+  id: string
+  name?: string | null
+  email?: string | null
+}
 
 const navigation = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
@@ -35,7 +42,51 @@ export default function AdminLayout({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const pathname = usePathname()
-  const user = { name: 'Admin', email: 'admin@example.com' }
+  const router = useRouter()
+  const [user, setUser] = useState<User | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      try {
+        const session = (await authClient.getSession()) as unknown as Session | null
+        if (session?.user) {
+          setUser({ id: session.user.id, name: session.user.name, email: session.user.email })
+        }
+      } catch (e) {
+        console.error('Failed to get session:', e)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchSession()
+  }, [])
+
+  const handleLogout = async () => {
+    await authClient.signOut()
+    router.push('/auth/login')
+  }
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p className="text-gray-500">Loading...</p>
+      </div>
+    )
+  }
+
+  // Not authenticated
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-500 mb-4">You are not authenticated</p>
+          <Button onClick={() => router.push('/auth/login')}>Login</Button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -111,7 +162,7 @@ export default function AdminLayout({
           <Button
             variant="outline"
             className="w-full justify-start gap-2"
-            onClick={() => authClient.signOut()}
+            onClick={handleLogout}
           >
             <LogOut className="w-4 h-4" />
             Logout

@@ -2,10 +2,12 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Header from "@/components/alqabas/Header";
 import Footer from "@/components/alqabas/Footer";
-import { getCategory, getArticlesByCategory, categories } from '@/lib/alqabas-data'
+import { getCategory, getArticlesByCategory } from '@/lib/data-adapter'
+
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
-  const category = getCategory(Number(params.id))
+  const category = await getCategory(params.id)
 
   if (!category) return { title: 'Category Not Found' }
 
@@ -16,8 +18,8 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 }
 
 export default async function CategoryPage({ params }: { params: { id: string } }) {
-  const category = getCategory(Number(params.id))
-  const articles = getArticlesByCategory(Number(params.id))
+  const category = await getCategory(params.id)
+  const articles = category ? await getArticlesByCategory(category.id) : []
 
   if (!category) {
     notFound()
@@ -50,7 +52,7 @@ export default async function CategoryPage({ params }: { params: { id: string } 
                   )}
                   <div className="p-4">
                     <h2 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2">
-                      <Link href={`/article/${article.id}`} className="hover:text-[#005C9D] transition-colors">
+                      <Link href={`/article/${article.slug}`} className="hover:text-[#005C9D] transition-colors">
                         {article.title}
                       </Link>
                     </h2>

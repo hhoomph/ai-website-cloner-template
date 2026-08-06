@@ -87,19 +87,27 @@ export default function NewCategoryPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Color</label>
-                <Input
-                  type="color"
-                  value={form.color}
-                  onChange={(e) => updateField('color', e.target.value)}
-                  className="h-10"
-                />
+                <div className="flex items-center gap-3">
+                  <Input
+                    type="color"
+                    value={form.color}
+                    onChange={(e) => updateField('color', e.target.value)}
+                    className="w-16 h-10 p-1"
+                  />
+                  <span className="text-xs text-gray-500 font-mono">{form.color}</span>
+                </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Gradient</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Gradient Preview</label>
+                <div
+                  className="h-10 rounded-md border border-gray-200"
+                  style={{ background: form.gradient }}
+                />
                 <Input
                   value={form.gradient}
                   onChange={(e) => updateField('gradient', e.target.value)}
                   placeholder="linear-gradient(...)"
+                  className="mt-2"
                 />
               </div>
             </div>
